@@ -13,7 +13,7 @@ class SGD:
         
     def update(self, params, grads):
         for i in range(len(params)):
-            params[i] -= self.lr * grads[i]
+            params[i].assign(params[i] - self.lr * grads[i])
 
 
 class Momentum:

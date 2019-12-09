@@ -23,8 +23,8 @@ loss_list = []
 
 for epoch in range(max_epoch):
     idx = tf.random.shuffle(tf.range(data_size))
-    x = x[idx]
-    t = t[idx]
+    x = x[idx.numpy()]
+    t = t[idx.numpy()]
 
     for iters in range(max_iters):
         batch_x = x[iters*batch_size:(iters+1)*batch_size]
@@ -39,9 +39,15 @@ for epoch in range(max_epoch):
 
         if (iters+1) % 10 == 0:
             avg_loss = total_loss / loss_count
-            print('| epoch %d | iter %d / %d | loss %.2f' % (epoch+1, iters+1, max_iters, avg_loss))
+            print('| epoch %d | iter %d / %d | loss %.4f' % (epoch+1, iters+1, max_iters, avg_loss))
             loss_list.append(avg_loss)
             total_loss, loss_count = 0, 0
+    # for g in model.params:
+    #     print(g.shape, tf.math.reduce_sum(g).numpy())
+    # for g in model.grads:
+    #     print(g.shape, tf.math.reduce_sum(g).numpy())
 
-        plt.plot(loss_list)
-        plt.show()
+
+plt.plot(loss_list)
+plt.savefig('test.png')
+plt.close()
